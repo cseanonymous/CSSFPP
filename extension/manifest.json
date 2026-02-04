@@ -1,0 +1,9 @@
+{
+  "manifest_version": 3,
+  "name": "CSS Logger",
+  "version": "1.1",
+  "permissions": ["scripting", "activeTab", "downloads", "storage", "tabs"],
+  "host_permissions": ["<all_urls>"],
+  "background": { "service_worker": "background.js" },
+  "action": { "default_title": "Click to run" }
+}
