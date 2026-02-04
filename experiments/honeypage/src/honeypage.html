@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Honey Page Test (Converged)</title>
+<style>
+.box {
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  border: 1px #AAA dashed;
+  font-family: MyFont;
+  position: relative;
+  background-size: contain;      
+  background-repeat: no-repeat;  
+  background-position: center;  
+}
+
+/* 1. prefers-color-scheme */
+@media (prefers-color-scheme: dark) {
+  #d1 {
+    background-image: url('verify_prefers-color-scheme_dark.jpg');
+  }
+  #d1::before {
+    content: "dark";
+    position: absolute;
+    top: 70%;
+    left: 10%;
+  }
+}
+
+/* 2. hover/pointer */
+@media (hover: none) and (pointer: coarse) {
+  #d2 {
+    background-image: url('verify_hover-none_pointer-coarse.jpg');
+  }
+  #d2::before {
+    content: "touch";
+    position: absolute;
+    top: 70%;
+    left: 10%;
+  }
+}
+
+/* 3. orientation */
+@media (orientation: portrait) {
+  #d3 {
+    background-image: url('verify_orientation_portrait.jpg');
+  }
+  #d3::before {
+    content: "portrait";
+    position: absolute;
+    top: 70%;
+    left: 10%;
+  }
+}
+
+/* 4. resolution */
+@media (min-resolution: 192dpi) {
+  #d4 {
+    background-image: url('verify_resolution_192dpi.jpg');
+  }
+  #d4::before {
+    content: "high-res";
+    position: absolute;
+    top: 70%;
+    left: 10%;
+  }
+}
+
+/* 5. display-mode */
+@media (display-mode: standalone) {
+  #d5 {
+    background-image: url('verify_display-mode_standalone.jpg');
+  }
+  #d5::before {
+    content: "standalone";
+    position: absolute;
+    top: 70%;
+    left: 10%;
+  }
+}
+@media (display-mode: browser) {
+  #d5 {
+    background-image: url('verify_display-mode_browser.jpg');
+  }
+  #d5::before {
+    content: "browser";
+    position: absolute;
+    top: 70%;
+    left: 10%;
+  }
+}
+
+/* 6. @supports: engine-specific feature */
+@supports (-webkit-appearance: none) {
+  #d6 {
+    background-image: url('verify_-webkit-appearance_none.jpg');
+  }
+  #d6::before {
+    content: "webkit";
+    position: absolute;
+    top: 70%;
+    left: 10%;
+  }
+}
+
+/* 7. prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  #d7 {
+    background-image: url('verify_prefers-reduced-motion_reduce.jpg');
+  }
+  #d7::before {
+    content: "reduced-motion";
+    position: absolute;
+    top: 70%;
+    left: 10%;
+  }
+}
+
+/* 8. update frequency */
+@media (update: slow) {
+  #d8 {
+    background-image: url('verify_update_slow.jpg');
+  }
+  #d8::before {
+    content: "slow-display";
+    position: absolute;
+    top: 70%;
+    left: 10%;
+  }
+}
+
+/* 9. color-gamut */
+@media (color-gamut: p3) {
+  #d9 {
+    background-image: url('verify_color-gamut_p3.jpg');
+  }
+  #d9::before {
+    content: "p3-gamut";
+    position: absolute;
+    top: 70%;
+    left: 10%;
+  }
+}
+
+/* 10. width (4 coarse ranges) */
+@media screen and (max-width: 799px) {
+  #d10 { background-image: url('verify_width_0-799.jpg'); }
+  #d10::before { content: "<800px"; position: absolute; top: 70%; left: 10%; }
+}
+@media screen and (min-width: 800px) and (max-width: 1279px) {
+  #d10 { background-image: url('verify_width_800-1279.jpg'); }
+  #d10::before { content: "800–1279"; position: absolute; top: 70%; left: 10%; }
+}
+@media screen and (min-width: 1280px) and (max-width: 1919px) {
+  #d10 { background-image: url('verify_width_1280-1919.jpg'); }
+  #d10::before { content: "1280–1919"; position: absolute; top: 70%; left: 10%; }
+}
+@media screen and (min-width: 1920px) {
+  #d10 { background-image: url('verify_width_1920+.jpg'); }
+  #d10::before { content: ">=1920"; position: absolute; top: 70%; left: 10%; }
+}
+
+/* Font-face probe (fonts group) */
+@font-face {
+  font-family: 'MyFont';
+  src: local('Malgun Gothic'),
+       local('NanumGothic'),
+       url('verify_font_local_nanum-gothic.ttf');
+}
+</style>
+</head>
+<body>
+<div id="d1" class="box">1</div>
+<div id="d2" class="box">2</div>
+<div id="d3" class="box">3</div>
+<div id="d4" class="box">4</div>
+<div id="d5" class="box">5</div>
+<div id="d6" class="box">6</div>
+<div id="d7" class="box">7</div>
+<div id="d8" class="box">8</div>
+<div id="d9" class="box">9</div>
+<div id="d10" class="box">10</div>
+</body>
+</html>
