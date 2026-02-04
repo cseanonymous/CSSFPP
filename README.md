@@ -48,62 +48,66 @@ Detected CSS fingerprinting evidence is recorded locally and can be exported for
 
 The extension passively profiles websites, not users.
 
-## Experiments (experiments/)
-### Purpose
-The experiments directory contains scripts to support:
+## Experiments (`experiments/`)
 
-automated browsing with the CSSFPP extension installed,
+The `experiments/` directory supports two complementary evaluation settings described in the paper.
 
-collection of per-page CSS fingerprinting reports, and
+---
 
-aggregation and analysis across many sites.
+### Experiment 1: Large-scale Measurement
 
-These scripts are intended for large-scale measurement studies.
+#### Purpose
 
-### Typical Workflow
-Launch an automated browser with the CSSFPP extension loaded.
+This experiment measures the prevalence and structure of CSS fingerprinting in the wild.  
+It combines automated browsing with the CSSFPP extension to detect fingerprinting-capable CSS across many real-world websites.
 
-Visit a list of target domains.
+#### Workflow
 
-Collect JSON reports produced by the extension.
+- Launch an automated browser with the CSSFPP extension installed.
+- Visit a list of target domains (e.g., top-site lists).
+- Collect per-page JSON reports produced by the extension.
+- Aggregate and analyze results using scripts in `experiments/`.
 
-Aggregate and analyze results using the scripts in experiments/.
+#### Output
 
-### Requirements
-Python 3
+- Site-level and page-level summaries
+- Counts of Tier 1 and Tier 2 evidence
+- Aggregated statistics suitable for large-scale analysis
 
-Common Python data libraries (e.g., pandas)
+---
 
-An automated browsing framework (e.g., Selenium or Playwright)
+### Experiment 2: Controlled Honeypage Validation
 
-Exact dependencies depend on the specific experiment scripts used.
+#### Purpose
 
-## Detection Model (Summary)
-CSSFPP models CSS fingerprinting as relationships between:
+The honeypage experiment validates that CSS alone, without JavaScript, can reliably extract and externalize environment-dependent information.
 
-Sources: CSS predicates that depend on environment properties
-(e.g., user preferences, display capabilities, input capabilities).
+It serves as a controlled ground-truth experiment to confirm that the conditional CSS dependencies detected in the wild correspond to real, discriminative signals.
 
-Sinks: CSS constructs that trigger externally observable effects
-(e.g., conditional network fetches).
+#### Design
 
-Evidence is categorized into two tiers:
+- A dedicated honeypage is deployed with only static HTML and CSS.
+- The page embeds conditional CSS rules that depend on:
+  - user and accessibility preferences
+  - input and interaction capabilities
+  - display characteristics
+  - rendering-engine feature support
+- When a predicate evaluates to true, it triggers a feature-specific network request.
+- No JavaScript, timers, or active measurement code are used.
 
-Tier 1 (echo-confirmed): predicate information is explicitly reflected in requested resources.
+#### Workflow
 
-Tier 2 (dependency-confirmed): resource loading is gated by environment-dependent CSS logic without explicit token echo.
+- Clients load the honeypage in their browser.
+- The browser evaluates conditional CSS rules internally.
+- Predicate outcomes are externalized via conditional resource requests.
+- A server-side collector records which requests are received.
+- Per-visit CSS feature vectors are reconstructed from the request logs.
 
-Tier 2 evidence is reported conservatively and does not assert definitive tracking intent.
+#### Output
 
-## Output
-CSSFPP produces structured JSON artifacts containing:
+- Binary feature vectors representing CSS predicate outcomes
+- Per-feature entropy estimates
+- Evidence of cross-browser and cross-platform diversity
 
-page and site metadata,
+This experiment demonstrates that even a small set of declarative CSS predicates can partition clients into multiple distinguishable configurations.
 
-extracted CSS predicates and observable effects,
-
-inferred source–sink relationships, and
-
-per-page summaries suitable for aggregation.
-
-These artifacts are designed for reproducibility and offline analysis.
